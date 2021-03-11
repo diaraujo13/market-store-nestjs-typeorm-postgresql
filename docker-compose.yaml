@@ -18,8 +18,9 @@ services:
     volumes:
       - .docker/dbdata:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=123456
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=sistema
 
   pgadmin:
     container_name: pgadmin
