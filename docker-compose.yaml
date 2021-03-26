@@ -1,7 +1,17 @@
 version: '3'
 
 services:
-  app:
+  mongodb:
+    restart: always
+    image: mongo:4.2.3
+    ports:
+      - "27017:27017"
+    environment:
+      TZ: America/Sao_Paulo
+    volumes:
+      - .docker/mongodb:/data/db
+
+  api:
     build: .
     entrypoint: .docker/docker-entrypoint.sh
     container_name: nestjs-server
@@ -10,26 +20,13 @@ services:
     volumes:
       - .:/home/node/app
 
-  db:
-    container_name: db_server
-    build: .docker/postgres
-    restart: always
-    tty: true
-    volumes:
-      - .docker/dbdata:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=123456
-      - POSTGRES_DB=sistema
-
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    tty: true
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@user.com
-      - PGADMIN_DEFAULT_PASSWORD=123456
-    ports:
-      - '9000:80'
-    depends_on:
-      - db
+  # db:
+  #   container_name: db_server
+  #   build: .docker/postgres
+  #   restart: always
+  #   tty: true
+  #   volumes:
+  #     - .docker/dbdata:/var/lib/postgresql/data
+  #   environment:
+  #     - POSTGRES_PASSWORD=root
+  #     - POSTGRES_DB=sistema
